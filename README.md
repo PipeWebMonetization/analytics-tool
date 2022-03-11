@@ -144,7 +144,7 @@ Project Link: [https://github.com/PipeWebMonetization/analytics-tool](https://gi
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 [contributors-shield]: https://img.shields.io/github/contributors/PipeWebMonetization/analytics-tool.svg?style=for-the-badge
-[contributors-url]: https://github.com/PipeWebMonetization/plugin-wordpress/graphs/contributors
+[contributors-url]: https://github.com/PipeWebMonetization/analytics-tool/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/PipeWebMonetization/analytics-tool.svg?style=for-the-badge
 [forks-url]: https://github.com/PipeWebMonetization/analytics-tool/network/members
 [stars-shield]: https://img.shields.io/github/stars/PipeWebMonetization/analytics-tool.svg?style=for-the-badge
