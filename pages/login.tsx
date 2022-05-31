@@ -10,13 +10,16 @@ import {
   InputLeftElement,
   Text,
 } from "@chakra-ui/react";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import * as EmailValidator from "email-validator";
 import { EmailIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
 
 const Login: NextPage = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -29,6 +32,10 @@ const Login: NextPage = () => {
   });
 
   const isValidEmail = EmailValidator.validate(watch("email") ?? "");
+
+  if (session) {
+    router.push("/");
+  }
 
   return (
     <Flex
@@ -47,7 +54,7 @@ const Login: NextPage = () => {
         <Heading size={"lg"}>Welcome</Heading>
         <Text mt={4}>
           Welcome to Pipe Web Monetization! Please enter your email to receive
-          the recieve the login link.
+          the login link.
         </Text>
         <chakra.form onSubmit={onSubmit} mt={20}>
           <FormControl isInvalid={errors.email}>
@@ -73,6 +80,7 @@ const Login: NextPage = () => {
           <Button
             float={"right"}
             mt={10}
+            isDisabled={!isValidEmail}
             backgroundColor="pipewebmonetization.yellow"
             color={"pipewebmonetization.black"}
             type="submit"
