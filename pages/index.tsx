@@ -25,17 +25,40 @@ import { Bar } from "react-chartjs-2";
 import UserIcon from "../components/dashboard/userIcon";
 import BarsChart from "../components/dashboard/barsChart";
 import DoughnutChart from "../components/dashboard/doughnutChart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { transactionsResults } from "../lib/database/databaseService";
 
 const Dashboard: NextPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [loadingRevenue, setLoadingRevenue] = useState<boolean>(false);
+  const [revenueStatistics, setRevenueStatistics] =
+    useState<transactionsResults>({
+      perMonth: {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0,
+        "6": 0,
+        "7": 0,
+        "8": 0,
+        "9": 0,
+        "10": 0,
+        "11": 0,
+        "12": 0,
+        dateYear: 0,
+        userId: "",
+      },
+    });
 
   useEffect(() => {
-    fetch("api/transactions")
+    setLoadingRevenue(true);
+    fetch("/api/transactions")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        setRevenueStatistics(data);
+        setLoadingRevenue(false);
       });
   }, []);
 
@@ -77,7 +100,7 @@ const Dashboard: NextPage = () => {
             </Flex>
           </Flex>
           <Flex w={"65vw"} h={"25vh"} alignSelf={"center"} mt={"4%"}>
-            <BarsChart></BarsChart>
+            <BarsChart revenueStatistics={revenueStatistics}></BarsChart>
           </Flex>
         </Flex>
         <Flex
