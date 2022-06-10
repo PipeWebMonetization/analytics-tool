@@ -8,7 +8,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { transactionsResults } from "../../lib/database/databaseService";
+import { transactionsResults } from "../../../lib/database/databaseService";
 
 ChartJS.register(
   CategoryScale,
@@ -47,32 +47,30 @@ const options = {
 };
 
 const labels = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
-const BarsChart = (props: { revenueStatistics: transactionsResults }) => {
-  let values: number[] = [];
-  Object.values(props.revenueStatistics.perMonth!).forEach((val) =>
-    values.push(val as number)
-  );
-  values = values.splice(0, 12);
+const TransactionsPerMonth = (props: { revenueStatistics: transactionsResults }) => {
+  let chartData = [];
+
+  // Insert data into chartData
+  if (props.revenueStatistics.perMonth) {
+    for (let index = 1; index < 13; index++) {
+      if (props.revenueStatistics.perMonth[index]) {
+        chartData.push(props.revenueStatistics.perMonth[index]);
+      } else {
+        chartData.push(0);
+      }
+    }
+  }
+
+  // Define the chart data object
   const data = {
     labels,
     datasets: [
       {
         label: "Revenue",
-        data: values,
+        data: chartData,
         backgroundColor: "#FFC121",
       },
     ],
@@ -80,4 +78,4 @@ const BarsChart = (props: { revenueStatistics: transactionsResults }) => {
   return <Bar options={options} data={data} />;
 };
 
-export default BarsChart;
+export default TransactionsPerMonth;

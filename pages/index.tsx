@@ -2,7 +2,13 @@ import {
   Button,
   Flex,
   Heading,
+  Tab,
   Table,
+  TableContainer,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Tbody,
   Td,
   Th,
@@ -23,10 +29,12 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import UserIcon from "../components/dashboard/userIcon";
-import BarsChart from "../components/dashboard/barsChart";
+import TransactionsPerMonth from "../components/dashboard/barsCharts/transactionsPerMonth";
 import DoughnutChart from "../components/dashboard/doughnutChart";
 import { useEffect, useState } from "react";
 import { transactionsResults } from "../lib/database/databaseService";
+import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
+import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
 
 const Dashboard: NextPage = () => {
   const { data: session } = useSession();
@@ -54,10 +62,11 @@ const Dashboard: NextPage = () => {
 
   useEffect(() => {
     setLoadingRevenue(true);
-    fetch("/api/transactions")
+    fetch("/api/transactions/all")
       .then((res) => res.json())
       .then((data) => {
         setRevenueStatistics(data);
+        console.log(data);
         setLoadingRevenue(false);
       });
   }, []);
@@ -87,21 +96,55 @@ const Dashboard: NextPage = () => {
         borderRadius={"8px"}
         flexDir={"column"}
       >
-        <Flex flexDir={"row"} justifyContent={"space-between"} w={"100%"}>
-          <Heading size={"md"} ml={"5%"} mt={"1%"}>
-            Revenue by Month
-          </Heading>
-          <Flex flexDir={"row"}>
-            <Button borderRadius={0}>Day</Button>
-            <Button borderRadius={0} bgColor={"pipewebmonetization.yellow"}>
-              Month
-            </Button>
-            <Button borderRadius={0}>Year</Button>
-          </Flex>
-        </Flex>
-        <Flex w={"65vw"} h={"25vh"} alignSelf={"center"} mt={"4%"}>
-          <BarsChart revenueStatistics={revenueStatistics}></BarsChart>
-        </Flex>
+        <Tabs isLazy align='end' variant='unstyled' colorScheme='green' defaultIndex={1}>
+          <TabList>
+            <Tab _selected={{ color: 'pipewebmonetization.black', bg: 'pipewebmonetization.yellow' }}>Day</Tab>
+            <Tab _selected={{ color: 'pipewebmonetization.black', bg: 'pipewebmonetization.yellow' }}>Month</Tab>
+            <Tab _selected={{ color: 'pipewebmonetization.black', bg: 'pipewebmonetization.yellow', borderTopRightRadius: '7px' }}>Year</Tab>
+          </TabList>
+
+          <TabPanels>
+            <TabPanel p={0}>
+              <Flex flexDir={"column"} textAlign={'start'} w={"100%"} maxH={'28vh'}>
+                <Flex flexDir={'row'} alignItems={'center'} mb={'1rem'}>
+                  <Heading size={"lg"} ml={"5%"} >
+                    Revenue per Day of Week
+                  </Heading>
+                  <Heading size={'md'} ml={"5"}>
+                    2022
+                  </Heading>
+                </Flex>
+                <TransactionsPerDayOfWeek revenueStatistics={revenueStatistics}></TransactionsPerDayOfWeek>
+              </Flex>
+            </TabPanel>
+            <TabPanel p={0}>
+              <Flex flexDir={"column"} textAlign={'start'} w={"100%"} maxH={'28vh'}>
+                <Flex flexDir={'row'} alignItems={'center'} mb={'1rem'}>
+                  <Heading size={"lg"} ml={"5%"} >
+                    Revenue per Month
+                  </Heading>
+                  <Heading size={'md'} ml={"5"}>
+                    2022
+                  </Heading>
+                </Flex>
+                <TransactionsPerMonth revenueStatistics={revenueStatistics}></TransactionsPerMonth>
+              </Flex>
+            </TabPanel>
+            <TabPanel p={0}>
+              <Flex flexDir={"column"} textAlign={'start'} w={"100%"} maxH={'28vh'}>
+                <Flex flexDir={'row'} alignItems={'center'} mb={'1rem'}>
+                  <Heading size={"lg"} ml={"5%"} >
+                    Revenue per Year
+                  </Heading>
+                  <Heading size={'md'} ml={"5"}>
+                    2022
+                  </Heading>
+                </Flex>
+                <TransactionsPerYear revenueStatistics={revenueStatistics}></TransactionsPerYear>
+              </Flex>
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
       </Flex>
       <Flex
         alignSelf={"center"}
@@ -118,12 +161,13 @@ const Dashboard: NextPage = () => {
           h={"35vh"}
           flexDir={"column"}
         >
-          <Heading size={"md"} ml={"5%"} mt={"1%"}>
+          <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={'1rem'}>
             Revenue by Payment Pointer
           </Heading>
-          <Flex w={"14vw"} h={"25vh"}>
+          <Flex flexDir={'row'} alignSelf='center' position={'relative'} width='100%' height='75%'>
             <DoughnutChart></DoughnutChart>
           </Flex>
+
         </Flex>
         <Flex
           alignSelf={"center"}
@@ -133,20 +177,20 @@ const Dashboard: NextPage = () => {
           h={"35vh"}
           flexDir={"column"}
           px={5}
+
         >
-          <Heading size={"md"} ml={"5%"} mt={"1%"}>
+          <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={'1rem'}>
             Revenue by Content
           </Heading>
-          <Table>
+
+          <Table size={'sm'}>
             <Thead>
               <Tr>
-                <Td>Content</Td>
-              </Tr>
-              <Tr>
-                <Td>Revenue</Td>
+                <Td fontWeight={'bold'}>Content</Td>
+                <Td fontWeight={'bold'}>Revenue</Td>
               </Tr>
             </Thead>
-            <Tbody>
+            <Tbody >
               <Tr>
                 <Td>Danilinho&apos;s pancake recipe</Td>
                 <Td>U$ 200</Td>
@@ -159,11 +203,15 @@ const Dashboard: NextPage = () => {
                 <Td>Andrey&apos;s guide to a long term romance</Td>
                 <Td>U$ 5000</Td>
               </Tr>
+              <Tr>
+                <Td>Mari&apos;s guide on selling refrigerators in Alaska</Td>
+                <Td>U$ 12000</Td>
+              </Tr>
             </Tbody>
           </Table>
         </Flex>
       </Flex>
-    </Flex>
+    </Flex >
   );
   // }
 };

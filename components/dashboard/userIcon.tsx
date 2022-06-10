@@ -27,7 +27,7 @@ const UserIcon = (props: { userInitials: string }) => {
           <Text fontWeight={`bold`}>{props.userInitials}</Text>
         </MenuButton>
         <MenuList>
-          <Text pl={3}>Gabriel Tomonari</Text>
+          <Text pl={3}>Gabriel Piva</Text>
           <MenuItem>Settings</MenuItem>
           <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
         </MenuList>
