@@ -175,19 +175,19 @@ const Dashboard: NextPage = () => {
             </Thead>
             <Tbody >
               <Tr>
-                <Td>Danilinho&apos;s pancake recipe</Td>
+                <Td>Page 1</Td>
                 <Td>U$ 200</Td>
               </Tr>
               <Tr>
-                <Td>Pivas&apos;s cupcake recipe</Td>
+                <Td>Page 2</Td>
                 <Td>U$ 200</Td>
               </Tr>
               <Tr>
-                <Td>Andrey&apos;s guide to a long term romance</Td>
+                <Td>Page 3</Td>
                 <Td>U$ 5000</Td>
               </Tr>
               <Tr>
-                <Td>Mari&apos;s guide on selling refrigerators in Alaska</Td>
+                <Td>Page 4</Td>
                 <Td>U$ 12000</Td>
               </Tr>
             </Tbody>

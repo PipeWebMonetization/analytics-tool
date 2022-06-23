@@ -13,7 +13,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
-  labels: ['userid_test-user3'],
+  labels: ['$ilp.uphold.com/yPFi3hwdaKDw'],
   datasets: [
     {
       data: [100],
