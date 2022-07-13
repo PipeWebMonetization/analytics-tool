@@ -8,6 +8,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
+import Link from 'next/link';
 
 const UserIcon = (props: { userInitials: string }) => {
   return (
@@ -28,7 +29,7 @@ const UserIcon = (props: { userInitials: string }) => {
         </MenuButton>
         <MenuList>
           <Text pl={3}>Gabriel Piva</Text>
-          <MenuItem>Settings</MenuItem>
+          <MenuItem><Link href="/settings">Settings</Link></MenuItem>
           <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
         </MenuList>
       </Menu>
