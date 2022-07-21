@@ -1,26 +1,14 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-} from "chart.js";
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Chart as ChartJS, Tooltip, Legend, ArcElement } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const data = {
-  labels: ['$ilp.uphold.com/yPFi3hwdaKDw'],
+  labels: ["$ilp.uphold.com/yPFi3hwdaKDw"],
   datasets: [
     {
       data: [100],
-      backgroundColor: [
-        '#FFC121',
-        '#B07F00',
-      ],
+      backgroundColor: ["#FFC121", "#B07F00"],
       borderWidth: 1,
     },
   ],

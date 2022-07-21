@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import * as EmailValidator from "email-validator";
 import { EmailIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Login: NextPage = () => {
   const { data: session } = useSession();
@@ -33,9 +34,11 @@ const Login: NextPage = () => {
 
   const isValidEmail = EmailValidator.validate(watch("email") ?? "");
 
-  if (session) {
-    router.push("/");
-  }
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session]);
 
   return (
     <Flex
@@ -66,7 +69,7 @@ const Login: NextPage = () => {
               <Input
                 backgroundColor={"rgba(25, 25, 25, 0.04)"}
                 borderRadius="0"
-                type="text"
+                type="email"
                 placeholder="Enter your email address"
                 {...register("email", {
                   required: "This is required",
