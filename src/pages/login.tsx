@@ -16,9 +16,10 @@ import { useForm } from "react-hook-form";
 import * as EmailValidator from "email-validator";
 import { EmailIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const Login: NextPage = () => {
+  const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
   const {
@@ -29,7 +30,9 @@ const Login: NextPage = () => {
   } = useForm();
 
   const onSubmit = handleSubmit(async (values) => {
+    setLoading(true);
     await signIn("email", values);
+    setLoading(false);
   });
 
   const isValidEmail = EmailValidator.validate(watch("email") ?? "");
@@ -81,6 +84,7 @@ const Login: NextPage = () => {
             </InputGroup>
           </FormControl>
           <Button
+            isLoading={loading}
             float={"right"}
             mt={10}
             isDisabled={!isValidEmail}
