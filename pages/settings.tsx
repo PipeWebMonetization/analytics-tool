@@ -44,7 +44,7 @@ const Settings: NextPage = () => {
                 <Flex flexDir={"row"} mt={"5"} align={"center"}>
                     <CircleIcon number="3"></CircleIcon>
                     <Text fontWeight={`bold`} ml={"5"}>
-                        Paste the following code and confirm. That's all!
+                        Paste the following code and confirm. That&apos;s all!
                     </Text>
                 </Flex>
                 <Flex>
