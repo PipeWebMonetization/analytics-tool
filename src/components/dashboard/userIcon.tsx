@@ -6,9 +6,12 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 const UserIcon = (props: { userInitials: string }) => {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <Flex
       backgroundColor={"pipewebmonetization.yellow"}
@@ -26,8 +29,10 @@ const UserIcon = (props: { userInitials: string }) => {
           <Text fontWeight={`bold`}>{props.userInitials}</Text>
         </MenuButton>
         <MenuList>
-          <Text pl={3}>Gabriel Piva</Text>
-          <MenuItem>Settings</MenuItem>
+          <Text pl={3}>{session?.user?.email ?? ""}</Text>
+          <MenuItem>
+            <Link href="/settings">Settings</Link>
+          </MenuItem>
           <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
         </MenuList>
       </Menu>
