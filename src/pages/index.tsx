@@ -39,6 +39,7 @@ const Dashboard: NextPage = () => {
         console.log(data);
         setLoadingRevenue(false);
       });
+      fetch(`/api/pluginIds/pluginIds?email=${session?.user?.email}`)
   }, []);
 
   useEffect(() => {

@@ -17,7 +17,7 @@
     "@emotion/styled": "^11",
     "@next-auth/dynamodb-adapter": "^1.1.0",
     "@sendgrid/mail": "^7.7.0",
-    "aws-sdk": "^2.1179.0",
+    "aws-sdk": "^2.1192.0",
     "chart.js": "^3.7.1",
     "email-validator": "^2.0.4",
     "framer-motion": "^6",
