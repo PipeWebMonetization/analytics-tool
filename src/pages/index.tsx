@@ -39,13 +39,14 @@ const Dashboard: NextPage = () => {
         console.log(data);
         setLoadingRevenue(false);
       });
+    fetch(`/api/pluginIds/pluginIds?email=${session?.user?.email}`);
   }, []);
 
   useEffect(() => {
     if (!session) {
       router.push("/login");
     }
-  }, [session]);
+  }, [session, router]);
 
   if (!session) {
     return <div>Not Logged In</div>;
