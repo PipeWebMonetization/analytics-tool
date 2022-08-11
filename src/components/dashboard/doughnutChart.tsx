@@ -67,12 +67,12 @@ const DoughnutChart = (props: { revenueStatistics: transactionsResults }) => {
       {
         data: chartData.map((x) => x[0]),
         backgroundColor: [
-          "#FFA02E",
-          "#CC6F00",
-          "#FF8B00",
-          "#663800",
-          "#995300",
-          "#331C00",
+          "#FFC52E",
+          "#CC9300",
+          "#FFB800",
+          "#664A00",
+          "#996E00",
+          "#332500",
         ],
         borderWidth: 1,
       },
