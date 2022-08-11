@@ -28,8 +28,10 @@ const UserIcon = (props: { userInitials: string }) => {
           <Text fontWeight={`bold`}>{props.userInitials}</Text>
         </MenuButton>
         <MenuList>
-          <Text pl={3}>{session?.user?.email ?? ""}</Text>
-          <MenuItem>
+          <Text pl={3} mt={2}>
+            {session?.user?.email ?? ""}
+          </Text>
+          <MenuItem mt={5}>
             <Link href="/settings">Settings</Link>
           </MenuItem>
           <MenuItem onClick={() => signOut()}>Sign Out</MenuItem>
