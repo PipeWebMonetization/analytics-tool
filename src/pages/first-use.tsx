@@ -15,11 +15,31 @@ import { EmailIcon, ArrowBackIcon, CopyIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const Settings: NextPage = () => {
+  const { data: session } = useSession();
   const [value, setValue] = useState("");
   const { hasCopied, onCopy } = useClipboard(value);
+  const [isSaved, setisSaved] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const router = useRouter();
+
+  const savePluginID = () => {
+    if (value.length > 0 && session?.user?.email) {
+      fetch("/api/pluginIds/add", {
+        method: "POST",
+        body: JSON.stringify({ email: session.user.email, pluginId: value }),
+      }).then((res) => {
+        if (res.status == 200) {
+          setisSaved(true);
+          setisLoading(false);
+        } else {
+          setisLoading(false);
+        }
+      });
+    }
+  };
 
   return (
     <Flex w={"100vw"} h={"100vh"} m={"2"} flexDir={"column"}>
@@ -50,12 +70,13 @@ const Settings: NextPage = () => {
             First of all, give you Wordpress plugin a unique ID:
           </Text>
         </Flex>
-        <Flex>
-          <InputGroup mt={"5"} ml={"70px"}>
+        <Flex mt={"5"} alignContent={"center"} flexDir={"row"}>
+          <InputGroup ml={"70px"}>
             <Input
               backgroundColor={"rgba(25, 25, 25, 0.04)"}
               border={"none"}
               value={value}
+              isReadOnly={isSaved}
               onChange={(e) => setValue(e.target.value)}
             />
             <InputRightElement onClick={onCopy}>
@@ -65,6 +86,14 @@ const Settings: NextPage = () => {
               />
             </InputRightElement>
           </InputGroup>
+          <Button
+            ml={5}
+            isDisabled={isSaved || isLoading}
+            backgroundColor={"pipewebmonetization.yellow"}
+            onClick={() => savePluginID()}
+          >
+            Save
+          </Button>
         </Flex>
         <Flex flexDir={"row"} mt={"10"} align={"center"}>
           <CircleIcon number="2"></CircleIcon>
