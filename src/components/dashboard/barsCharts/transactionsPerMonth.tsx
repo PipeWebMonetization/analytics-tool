@@ -51,29 +51,40 @@ const labels = [
 ];
 
 const TransactionsPerMonth = (props: { revenueStatistics: transactionsResults }) => {
-  let chartData = [];
+
+  console.log("Chart props:",props.revenueStatistics);
+  let chartData:number[][]=[];
 
   // Insert data into chartData
-  if (props.revenueStatistics.perMonth) {
-    for (let index = 1; index < 13; index++) {
-      if (props.revenueStatistics.perMonth[index]) {
-        chartData.push(props.revenueStatistics.perMonth[index]);
-      } else {
-        chartData.push(0);
+  if (props.revenueStatistics.monthData) {
+    for(let i = 0; i < props.revenueStatistics.monthData.length; i++) {
+      if (!chartData[i]) {
+        chartData[i] = [];
+      }
+      for (let index = 1; index < 13; index++) {
+        
+        if (props.revenueStatistics.monthData[i][index]) {
+          chartData[i].push(props.revenueStatistics.monthData[i][index]);
+        } else {
+            chartData[i].push(0);
+          }
+        }
       }
     }
-  }
+  
+
+  console.log(chartData);
 
   // Define the chart data object
   const data = {
     labels,
-    datasets: [
-      {
-        label: "Revenue",
-        data: chartData,
-        backgroundColor: "#FFC121",
-      },
-    ],
+    datasets: chartData.map((data, index) => {
+return ({
+  label: props.revenueStatistics.monthData[index].paymentPointer ?? "Pointer",
+  data: data,
+  backgroundColor: "#FFC121",
+})
+    })
   };
   return <Bar options={options} data={data} />;
 };
