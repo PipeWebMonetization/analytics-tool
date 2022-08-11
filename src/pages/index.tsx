@@ -22,9 +22,11 @@ import { useEffect, useState } from "react";
 import { transactionsResults } from "../lib/database/databaseService";
 import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
 import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
+import { verifyPluginIDs } from "../modules";
 
 const Dashboard: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const email = session?.user?.email;
   const router = useRouter();
   const [loadingRevenue, setLoadingRevenue] = useState<boolean>(false);
   const [revenueStatistics, setRevenueStatistics] =
@@ -32,23 +34,34 @@ const Dashboard: NextPage = () => {
 
   useEffect(() => {
     setLoadingRevenue(true);
+
+    /* Checking if the user has any pluginIds. If not, it redirects to the settings page. */
+    const fetchData = async () => {
+      const pluginIdsData = await verifyPluginIDs(email);
+      if (pluginIdsData.Count == 0) {
+        router.push("/first-use");
+      }
+    };
+
+    if (email) {
+      fetchData();
+    }
+
     fetch("/api/transactions/all")
       .then((res) => res.json())
       .then((data) => {
         setRevenueStatistics(data);
-        console.log(data);
         setLoadingRevenue(false);
       });
-    fetch(`/api/pluginIds/pluginIds?email=${session?.user?.email}`);
-  }, []);
+  }, [email, router]);
 
   useEffect(() => {
-    if (!session) {
+    if (!session && status === "unauthenticated") {
       router.push("/login");
     }
-  }, [session, router]);
+  }, [session, router, status]);
 
-  if (!session) {
+  if (!session && status === "unauthenticated") {
     return <div>Not Logged In</div>;
   }
   return (

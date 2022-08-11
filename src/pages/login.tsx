@@ -63,7 +63,7 @@ const Login: NextPage = () => {
           the login link.
         </Text>
         <chakra.form onSubmit={onSubmit} mt={20}>
-          <FormControl isInvalid={errors.email}>
+          <FormControl isInvalid={isValidEmail}>
             <Text mb="8px">Email</Text>
             <InputGroup>
               <InputLeftElement pointerEvents="none">
