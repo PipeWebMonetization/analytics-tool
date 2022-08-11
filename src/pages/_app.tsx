@@ -15,11 +15,11 @@ const theme = extendTheme({ colors });
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <ChakraProvider theme={theme}>
+    <ChakraProvider theme={theme}>
+      <SessionProvider session={session}>
         <Component {...pageProps} />
-      </ChakraProvider>
-    </SessionProvider>
+      </SessionProvider>
+    </ChakraProvider>
   );
 }
 

@@ -1,73 +1,182 @@
+import {
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  IconButton,
+  Input,
+  Link,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { NextPage } from "next/types";
-import { Flex, Heading, Text, Input, InputGroup, InputRightElement, useClipboard } from "@chakra-ui/react";
 import UserIcon from "../components/dashboard/userIcon";
-import CircleIcon from "../components/circleIcon";
-import { EmailIcon, ArrowBackIcon } from "@chakra-ui/icons";
-import { useState } from "react";
-import Link from 'next/link';
+import { useEffect, useState } from "react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { PluginIdDocument, verifyPluginIDs } from "../modules";
+import { BsFillTrashFill } from "react-icons/bs";
 
-const Settings: NextPage = () => {
-    const [value, setValue] = useState('123e4567-e89b-12d3-a456-426655440000')
-    const { hasCopied, onCopy } = useClipboard(value)
+const Dashboard: NextPage = () => {
+  const { data: session, status } = useSession();
+  const email = session?.user?.email;
+  const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
+  const [newPluginID, setnewPluginID] = useState("");
+  const router = useRouter();
 
-    return (
-        <Flex w={"100vw"} h={"100vh"} m={"2"} flexDir={"column"}>
-            <Flex
-                flexDir={"row"}
-                w={"100vw"}
-                height={"5em"}
-                justifyContent={"flex-end"}
-            >
-                <UserIcon userInitials="G"></UserIcon>
-            </Flex>
-            <Flex alignSelf={"center"} flexDir={"column"}>
-                <Flex flexDir={"row"} mt={"10"} align={"center"}>
-                    <Heading size={"lg"}>
-                        <Link href="/">
-                            <ArrowBackIcon cursor={"pointer"} mr={"5"} color={"pipewebmonetization.black"} />
-                        </Link>
-                        Set up your dashboard
-                    </Heading>
-                </Flex>
-                <Flex flexDir={"row"} mt={"10"} align={"center"}>
-                    <CircleIcon number="1"></CircleIcon>
-                    <Text fontWeight={`bold`} ml={"5"}>
-                        Access the Pipe Web Monetization extension menu in your WordPress website admin
-                    </Text>
-                </Flex>
-                <Flex flexDir={"row"} mt={"5"} align={"center"}>
-                    <CircleIcon number="2"></CircleIcon>
-                    <Text fontWeight={`bold`} ml={"5"}>
-                        Click the ”Sync Analytics” menu tab
-                    </Text>
-                </Flex>
-                <Flex flexDir={"row"} mt={"5"} align={"center"}>
-                    <CircleIcon number="3"></CircleIcon>
-                    <Text fontWeight={`bold`} ml={"5"}>
-                        Paste the following code and confirm. That&apos;s all!
-                    </Text>
-                </Flex>
-                <Flex>
-                <InputGroup mt={'5'} ml={'70px'}>
-                    <Input 
-                        isReadOnly 
-                        backgroundColor={"rgba(25, 25, 25, 0.04)"} 
-                        border={"none"} 
-                        value={value}
-                    />
-                    <InputRightElement onClick={onCopy}>
-                        <EmailIcon cursor={"pointer"} color={"pipewebmonetization.black"} />
-                    </InputRightElement>
-                </InputGroup>
-                </Flex>
-                <Flex mt={"10"} align={"center"}>
-                    <Text fontWeight={`bold`} color={"rgba(25, 25, 25, 0.57)"}>
-                        After following these steps, you will be able to see your dashboard here
-                    </Text>
-                </Flex>
-            </Flex>
-        </Flex>
-    );
-}
+  const addPluginID = () => {
+    setisLoading(true);
+    if (newPluginID.length > 0) {
+      fetch("/api/pluginIds/add", {
+        method: "POST",
+        body: JSON.stringify({ email: email, pluginId: newPluginID }),
+      }).then((res) => {
+        if (res.status == 200) {
+          setPluginIds([
+            ...pluginIds,
+            { pluginId: newPluginID, userEmail: email ?? "" },
+          ]);
+          setnewPluginID("");
+          setIsAdding(false);
+          setisLoading(false);
+        } else {
+          setIsAdding(false);
+          setisLoading(false);
+        }
+      });
+    }
+  };
 
-export default Settings;
+  const deletePluginID = (pluginId: string) => {
+    setisLoading(true);
+    fetch("/api/pluginIds/delete", {
+      method: "DELETE",
+      body: JSON.stringify({ email: email, pluginId: pluginId }),
+    }).then((res) => {
+      if (res.status == 200) {
+        setPluginIds(pluginIds.filter((p) => p.pluginId != pluginId));
+        setisLoading(false);
+      } else {
+        console.error("Failed to delete pluginId");
+        setisLoading(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const pluginIdsData = await verifyPluginIDs(email);
+      setPluginIds(pluginIdsData.Items);
+    };
+
+    if (email) {
+      fetchData();
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (!session && status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [session, router, status]);
+
+  if (!session && status === "unauthenticated") {
+    return <div>Not Logged In</div>;
+  }
+  return (
+    <Flex w={"100vw"} h={"100vh"} flexDir={"column"}>
+      <Flex
+        flexDir={"row"}
+        w={"100vw"}
+        height={"5em"}
+        justifyContent={"flex-end"}
+      >
+        <UserIcon userInitials="G"></UserIcon>
+      </Flex>
+      <Flex
+        alignSelf={"center"}
+        w={"70vw"}
+        h={"80vh"}
+        border={"1px solid rgba(25, 25, 25, 0.16)"}
+        borderRadius={"8px"}
+        flexDir={"column"}
+        py={5}
+        px={8}
+      >
+        <Heading size={"lg"}>
+          <Link href="/">
+            <ArrowBackIcon
+              cursor={"pointer"}
+              mr={"5"}
+              color={"pipewebmonetization.black"}
+            />
+          </Link>
+          Settings
+        </Heading>
+        <Divider py={2}></Divider>
+        <Heading size={"sm"} mt={10} ml={6}>
+          Plugin Installations IDs
+        </Heading>
+        <Table>
+          <Tbody>
+            {pluginIds.map((pluginId) => (
+              <Tr key={pluginId.pluginId}>
+                <Td>{pluginId.pluginId}</Td>
+                <Td>
+                  <IconButton
+                    colorScheme={"red"}
+                    aria-label={"Delete"}
+                    isLoading={isLoading}
+                    onClick={() => deletePluginID(pluginId.pluginId)}
+                  >
+                    <BsFillTrashFill />
+                  </IconButton>
+                </Td>
+              </Tr>
+            ))}
+            {isAdding && (
+              <Tr>
+                <Td>
+                  <Input
+                    type="text"
+                    placeholder="Plugin installation unique ID"
+                    value={newPluginID}
+                    onChange={(e) => setnewPluginID(e.target.value)}
+                  ></Input>
+                </Td>
+                <Td>
+                  <Button
+                    colorScheme={"green"}
+                    isLoading={isLoading}
+                    onClick={() => addPluginID()}
+                  >
+                    Save
+                  </Button>
+                </Td>
+              </Tr>
+            )}
+          </Tbody>
+        </Table>
+        <Button
+          size={"sm"}
+          w={60}
+          background={"pipewebmonetization.yellow"}
+          mt={5}
+          isLoading={isLoading}
+          onClick={() => setIsAdding(true)}
+        >
+          Add new plugin installation
+        </Button>
+      </Flex>
+    </Flex>
+  );
+};
+
+export default Dashboard;
