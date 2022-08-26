@@ -21,7 +21,6 @@ const UserIcon = (props: { userInitials: string }) => {
       align={"center"}
       fontWeight={"bold"}
       alignSelf={"center"}
-      mr={"15vw"}
     >
       <Menu>
         <MenuButton>

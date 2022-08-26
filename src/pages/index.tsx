@@ -9,8 +9,9 @@ import {
   Tabs,
   Tbody,
   Td,
-  Thead,
+  Text,
   Tr,
+  Select,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -22,7 +23,7 @@ import { useEffect, useState } from "react";
 import { transactionsResults } from "../lib/database/databaseService";
 import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
 import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
-import { verifyPluginIDs } from "../modules";
+import { PluginIdDocument, verifyPluginIDs } from "../modules";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
@@ -30,30 +31,45 @@ const Dashboard: NextPage = () => {
   const router = useRouter();
   const [loadingRevenue, setLoadingRevenue] = useState<boolean>(false);
   const [revenueStatistics, setRevenueStatistics] =
-    useState<transactionsResults>({});
+    useState<transactionsResults>({
+      yearData: [],
+      monthData: [],
+      weekData: [],
+    });
+  const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
+  const [selectedPluginId, setSelectedPluginId] = useState<string>("");
+  const [selectedYear, setSelectedYear] = useState<string>("2022");
 
   useEffect(() => {
-    setLoadingRevenue(true);
-
     /* Checking if the user has any pluginIds. If not, it redirects to the settings page. */
     const fetchData = async () => {
       const pluginIdsData = await verifyPluginIDs(email);
       if (pluginIdsData.Count == 0) {
         router.push("/first-use");
+      } else {
+        setPluginIds(pluginIdsData.Items);
+        setSelectedPluginId(pluginIdsData.Items[0].pluginId);
       }
     };
 
     if (email) {
       fetchData();
     }
-
-    fetch("/api/transactions/all")
-      .then((res) => res.json())
-      .then((data) => {
-        setRevenueStatistics(data);
-        setLoadingRevenue(false);
-      });
   }, [email, router]);
+
+  useEffect(() => {
+    setLoadingRevenue(true);
+    if (email && selectedPluginId && selectedYear) {
+      fetch(
+        `/api/transactions/all?pluginId=${selectedPluginId}&dateYear=${selectedYear}&type=all`
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          setRevenueStatistics(data);
+          setLoadingRevenue(false);
+        });
+    }
+  }, [selectedPluginId, selectedYear, email]);
 
   useEffect(() => {
     if (!session && status === "unauthenticated") {
@@ -68,10 +84,40 @@ const Dashboard: NextPage = () => {
     <Flex w={"100vw"} h={"100vh"} flexDir={"column"}>
       <Flex
         flexDir={"row"}
-        w={"100vw"}
+        w={"70vw"}
         height={"5em"}
-        justifyContent={"flex-end"}
+        alignItems={"center"}
+        alignSelf={"center"}
+        justifyContent={"space-between"}
       >
+        <Flex flexDir={"row"}>
+          <Select
+            placeholder="Select your Plugin ID"
+            w={"15vw"}
+            mr={"2"}
+            value={selectedPluginId}
+            onChange={(event) => setSelectedPluginId(event.target.value)}
+          >
+            {pluginIds &&
+              pluginIds.map((pluginId) => (
+                <option key={pluginId.pluginId} value={pluginId.pluginId}>
+                  {pluginId.pluginId}
+                </option>
+              ))}
+          </Select>
+          <Select
+            placeholder="Select a year"
+            w={"15vw"}
+            value={selectedYear}
+            onChange={(event) => setSelectedYear(event.target.value)}
+          >
+            {[2022, 2023, 2024, 2025].map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </Select>
+        </Flex>
         <UserIcon userInitials="G"></UserIcon>
       </Flex>
       <Flex
@@ -153,9 +199,11 @@ const Dashboard: NextPage = () => {
                     2022
                   </Heading>
                 </Flex>
-                <TransactionsPerMonth
-                  revenueStatistics={revenueStatistics}
-                ></TransactionsPerMonth>
+                {revenueStatistics && (
+                  <TransactionsPerMonth
+                    revenueStatistics={revenueStatistics}
+                  ></TransactionsPerMonth>
+                )}
               </Flex>
             </TabPanel>
             <TabPanel p={0}>
@@ -206,7 +254,11 @@ const Dashboard: NextPage = () => {
             width="100%"
             height="75%"
           >
-            <DoughnutChart></DoughnutChart>
+            {revenueStatistics && (
+              <DoughnutChart
+                revenueStatistics={revenueStatistics}
+              ></DoughnutChart>
+            )}
           </Flex>
         </Flex>
         <Flex
@@ -221,33 +273,7 @@ const Dashboard: NextPage = () => {
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
             Revenue by Content
           </Heading>
-
-          <Table size={"sm"}>
-            <Thead>
-              <Tr>
-                <Td fontWeight={"bold"}>Content</Td>
-                <Td fontWeight={"bold"}>Revenue</Td>
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Page 1</Td>
-                <Td>U$ 200</Td>
-              </Tr>
-              <Tr>
-                <Td>Page 2</Td>
-                <Td>U$ 200</Td>
-              </Tr>
-              <Tr>
-                <Td>Page 3</Td>
-                <Td>U$ 5000</Td>
-              </Tr>
-              <Tr>
-                <Td>Page 4</Td>
-                <Td>U$ 12000</Td>
-              </Tr>
-            </Tbody>
-          </Table>
+          <Text ml={6}>This feature is coming soon... </Text>
         </Flex>
       </Flex>
     </Flex>
