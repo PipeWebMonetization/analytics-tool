@@ -73,7 +73,7 @@ const TransactionsPerMonth = (props: {
       if (!chartData[i]) {
         chartData[i] = [];
       }
-      for (let index = 1; index < 13; index++) {
+      for (let index = 0; index < 12; index++) {
         if (props.revenueStatistics.monthData[i][index]) {
           chartData[i].push(props.revenueStatistics.monthData[i][index]);
         } else {
@@ -97,7 +97,7 @@ const TransactionsPerMonth = (props: {
     datasets: chartData.map((data, index) => {
       return {
         label:
-          props.revenueStatistics.monthData[index].paymentPointer ?? "Pointer",
+          props.revenueStatistics.monthData[index].paymentPointer.slice(0, -5) ?? "Pointer",
         data: data,
         backgroundColor: customColors[index],
       };

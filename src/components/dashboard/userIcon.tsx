@@ -9,7 +9,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-const UserIcon = (props: { userInitials: string }) => {
+const UserIcon = () => {
   const { data: session } = useSession();
   return (
     <Flex
@@ -24,7 +24,9 @@ const UserIcon = (props: { userInitials: string }) => {
     >
       <Menu>
         <MenuButton>
-          <Text fontWeight={`bold`}>{props.userInitials}</Text>
+          <Text fontWeight={`bold`}>
+            {session?.user?.email ? session?.user?.email[0].toUpperCase() : ""}
+          </Text>
         </MenuButton>
         <MenuList>
           <Text pl={3} mt={2}>

@@ -49,7 +49,7 @@ const Settings: NextPage = () => {
         height={"5em"}
         justifyContent={"flex-end"}
       >
-        <UserIcon userInitials="G"></UserIcon>
+        <UserIcon></UserIcon>
       </Flex>
       <Flex alignSelf={"center"} flexDir={"column"}>
         <Flex flexDir={"row"} mt={"10"} align={"center"}>
