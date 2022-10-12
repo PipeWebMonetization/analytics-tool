@@ -36,24 +36,20 @@ const Dashboard: NextPage = () => {
   const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
   const [selectedPluginId, setSelectedPluginId] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("2022");
-  const [hasMonetizationListener, setMonetizationListener] = useState<boolean>(false);
-  const batcher = new Batcher();
 
   useEffect(() => {
-    if (!hasMonetizationListener) {
-      setMonetizationListener(true);
-      // @ts-ignore
-      document.monetization.addEventListener(
-        'monetizationprogress',
-        (event: MonetizationProgressEvent) => {
-          batcher.add({
-            date: new Date().getTime(),
-            value: Number((Number(event.detail.amount) * (10 ** (-1 * event.detail.assetScale))).toFixed(event.detail.assetScale))
-          });
-        }
-      );
-      batcher.scheduleFlush();
-    }
+    const batcher = new Batcher();
+    // @ts-ignore
+    document.monetization.addEventListener(
+      'monetizationprogress',
+      (event: MonetizationProgressEvent) => {
+        batcher.add({
+          date: new Date().getTime(),
+          value: Number((Number(event.detail.amount) * (10 ** (-1 * event.detail.assetScale))).toFixed(event.detail.assetScale))
+        });
+      }
+    );
+    batcher.scheduleFlush();
   }, []);
 
   useEffect(() => {
