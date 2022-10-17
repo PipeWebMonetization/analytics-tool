@@ -10,17 +10,17 @@ export interface TransactionRequest {
     transactions: TransactionItem[]
 };
 
-export interface MonetizationProgress {
+export interface MonetizationDetail {
     paymentPointer: string;
-    requestId: string;
+    requestId?: string;
     amount: string;
     assetCode: string;
     assetScale: number;
-    receipt: string;
+    receipt?: string;
 }
 
-export interface MonetizationProgressEvent {
-    detail: MonetizationProgress;
+export interface MonetizationEvent {
+    detail: MonetizationDetail;
 }
 
 export class Batcher {

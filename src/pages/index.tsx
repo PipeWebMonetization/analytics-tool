@@ -20,7 +20,7 @@ import { transactionsResults } from "../lib/database/databaseService";
 import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
 import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
 import { PluginIdDocument, verifyPluginIDs } from "../modules";
-import { MonetizationProgressEvent, Batcher } from "../lib/monetization/monetization";
+import { MonetizationEvent, Batcher } from "../lib/monetization/monetization";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
@@ -41,11 +41,31 @@ const Dashboard: NextPage = () => {
     const batcher = new Batcher();
     // @ts-ignore
     document.monetization.addEventListener(
-      'monetizationprogress',
-      (event: MonetizationProgressEvent) => {
+      "tip",
+      (event: MonetizationEvent) => {
         batcher.add({
           date: new Date().getTime(),
-          value: Number((Number(event.detail.amount) * (10 ** (-1 * event.detail.assetScale))).toFixed(event.detail.assetScale))
+          value: Number(
+            (
+              Number(event.detail.amount) *
+              10 ** (-1 * event.detail.assetScale)
+            ).toFixed(event.detail.assetScale)
+          ),
+        });
+      }
+    );
+    // @ts-ignore
+    document.monetization.addEventListener(
+      "monetizationprogress",
+      (event: MonetizationEvent) => {
+        batcher.add({
+          date: new Date().getTime(),
+          value: Number(
+            (
+              Number(event.detail.amount) *
+              10 ** (-1 * event.detail.assetScale)
+            ).toFixed(event.detail.assetScale)
+          ),
         });
       }
     );

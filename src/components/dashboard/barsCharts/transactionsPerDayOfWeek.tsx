@@ -46,7 +46,7 @@ const options = {
   },
 };
 
-const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const TransactionsPerDayOfWeek = (props: {
   revenueStatistics: transactionsResults;
@@ -83,7 +83,8 @@ const TransactionsPerDayOfWeek = (props: {
     datasets: chartData.map((data, index) => {
       return {
         label:
-          props.revenueStatistics.weekData[index].paymentPointer.slice(0, -5) ?? "Pointer",
+          props.revenueStatistics.weekData[index].paymentPointer.slice(0, -5) ??
+          "Pointer",
         data: data,
         backgroundColor: customColors[index],
       };
