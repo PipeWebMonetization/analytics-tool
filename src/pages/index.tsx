@@ -2,15 +2,11 @@ import {
   Flex,
   Heading,
   Tab,
-  Table,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  Tbody,
-  Td,
   Text,
-  Tr,
   Select,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
@@ -24,6 +20,7 @@ import { transactionsResults } from "../lib/database/databaseService";
 import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
 import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
 import { PluginIdDocument, verifyPluginIDs } from "../modules";
+import { MonetizationEvent, Batcher } from "../lib/monetization/monetization";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
@@ -39,6 +36,41 @@ const Dashboard: NextPage = () => {
   const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
   const [selectedPluginId, setSelectedPluginId] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("2022");
+
+  useEffect(() => {
+    const batcher = new Batcher();
+    // @ts-ignore
+    document.monetization.addEventListener(
+      "tip",
+      (event: MonetizationEvent) => {
+        batcher.add({
+          date: new Date().getTime(),
+          value: Number(
+            (
+              Number(event.detail.amount) *
+              10 ** (-1 * event.detail.assetScale)
+            ).toFixed(event.detail.assetScale)
+          ),
+        });
+      }
+    );
+    // @ts-ignore
+    document.monetization.addEventListener(
+      "monetizationprogress",
+      (event: MonetizationEvent) => {
+        batcher.add({
+          date: new Date().getTime(),
+          value: Number(
+            (
+              Number(event.detail.amount) *
+              10 ** (-1 * event.detail.assetScale)
+            ).toFixed(event.detail.assetScale)
+          ),
+        });
+      }
+    );
+    batcher.scheduleFlush();
+  }, []);
 
   useEffect(() => {
     /* Checking if the user has any pluginIds. If not, it redirects to the settings page. */
@@ -79,6 +111,8 @@ const Dashboard: NextPage = () => {
 
   if (!session && status === "unauthenticated") {
     return <div>Not Logged In</div>;
+  } else if (!session) {
+    return <div></div>;
   }
   return (
     <Flex w={"100vw"} h={"100vh"} flexDir={"column"}>
@@ -118,7 +152,7 @@ const Dashboard: NextPage = () => {
             ))}
           </Select>
         </Flex>
-        <UserIcon userInitials="G"></UserIcon>
+        <UserIcon></UserIcon>
       </Flex>
       <Flex
         alignSelf={"center"}

@@ -4,6 +4,7 @@ import {
   Flex,
   FormControl,
   Heading,
+  Image,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -49,6 +50,10 @@ const Login: NextPage = () => {
       w={"100vw"}
       h={"100vh"}
       backgroundColor={"pipewebmonetization.yellow"}
+      backgroundImage={"/login-background.svg"}
+      backgroundRepeat={"no-repeat"}
+      backgroundSize={"cover"}
+      backgroundPosition={"center"}
     >
       <Flex
         flexDir={"column"}
@@ -95,6 +100,36 @@ const Login: NextPage = () => {
             Submit
           </Button>
         </chakra.form>
+      </Flex>
+      <Flex
+        flexDir={"row"}
+        w={"60%"}
+        px={"10"}
+        py={"10"}
+        justifyContent={"end"}
+        backgroundImage={"url(/people.svg)"}
+        backgroundRepeat={"no-repeat"}
+        backgroundSize={"60%"}
+        backgroundPosition={"center"}
+      >
+        <Flex
+          flexDir={"row"}
+          alignItems={"center"}
+          justifyContent={"center"}
+          marginTop={"auto"}
+        >
+          <Image
+            marginEnd={"5"}
+            objectFit={"cover"}
+            src={"/pipe-logo.svg"}
+            alt={"Pipe Logo"}
+          />
+          <Image
+            objectFit={"cover"}
+            src={"/pipe-name.svg"}
+            alt={"Pipe Logo"}
+          />
+        </Flex>
       </Flex>
     </Flex>
   );

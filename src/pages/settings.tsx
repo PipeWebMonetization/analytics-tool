@@ -98,7 +98,7 @@ const Dashboard: NextPage = () => {
         height={"5em"}
         justifyContent={"flex-end"}
       >
-        <UserIcon userInitials="G"></UserIcon>
+        <UserIcon></UserIcon>
       </Flex>
       <Flex
         alignSelf={"center"}

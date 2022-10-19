@@ -62,20 +62,20 @@ const TransactionsPerYear = (props: {
   revenueStatistics: transactionsResults;
 }) => {
   let chartData: number[][] = [];
-
+  var totalValue = 0;
   // Insert data into chartData
   if (props.revenueStatistics.yearData) {
     for (let i = 0; i < props.revenueStatistics.yearData.length; i++) {
       if (!chartData[i]) {
         chartData[i] = [];
       }
-      for (let index = 1; index < 13; index++) {
-        if (props.revenueStatistics.yearData[i][index]) {
-          chartData[i].push(props.revenueStatistics.yearData[i][index]);
-        } else {
-          chartData[i].push(0);
+      totalValue = 0;
+      for (let dayIndex = 0; dayIndex < 366; dayIndex++) {
+        if (props.revenueStatistics.yearData[i][dayIndex]) {
+          totalValue += props.revenueStatistics.yearData[i][dayIndex];
         }
       }
+      chartData[i].push(totalValue);
     }
   }
 
@@ -92,7 +92,7 @@ const TransactionsPerYear = (props: {
     datasets: chartData.map((data, index) => {
       return {
         label:
-          props.revenueStatistics.monthData[index].paymentPointer ?? "Pointer",
+          props.revenueStatistics.monthData[index].paymentPointer.slice(0, -5) ?? "Pointer",
         data: data,
         backgroundColor: customColors[index],
       };

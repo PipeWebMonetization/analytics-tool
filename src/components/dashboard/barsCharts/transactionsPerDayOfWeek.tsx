@@ -46,7 +46,7 @@ const options = {
   },
 };
 
-const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const TransactionsPerDayOfWeek = (props: {
   revenueStatistics: transactionsResults;
@@ -59,7 +59,7 @@ const TransactionsPerDayOfWeek = (props: {
       if (!chartData[i]) {
         chartData[i] = [];
       }
-      for (let index = 1; index < 13; index++) {
+      for (let index = 0; index < 7; index++) {
         if (props.revenueStatistics.weekData[i][index]) {
           chartData[i].push(props.revenueStatistics.weekData[i][index]);
         } else {
@@ -83,7 +83,8 @@ const TransactionsPerDayOfWeek = (props: {
     datasets: chartData.map((data, index) => {
       return {
         label:
-          props.revenueStatistics.monthData[index].paymentPointer ?? "Pointer",
+          props.revenueStatistics.weekData[index].paymentPointer.slice(0, -5) ??
+          "Pointer",
         data: data,
         backgroundColor: customColors[index],
       };
