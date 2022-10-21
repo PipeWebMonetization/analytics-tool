@@ -40,7 +40,7 @@ const Dashboard: NextPage = () => {
   useEffect(() => {
     const batcher = new Batcher();
     // @ts-ignore
-    document.monetization.addEventListener(
+    document.monetization?.addEventListener(
       "tip",
       (event: MonetizationEvent) => {
         batcher.add({
@@ -55,7 +55,7 @@ const Dashboard: NextPage = () => {
       }
     );
     // @ts-ignore
-    document.monetization.addEventListener(
+    document.monetization?.addEventListener(
       "monetizationprogress",
       (event: MonetizationEvent) => {
         batcher.add({
