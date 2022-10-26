@@ -4,12 +4,18 @@ import {
   transactionsPerPaymentPointer,
   transactionsResults,
 } from "../../lib/database/databaseService";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const options = {
   responsive: true,
   maintainAspectRatio: false,
+  plugins: {
+    datalabels: {
+      display: false,
+    },
+  },
 };
 
 const DoughnutChart = (props: { revenueStatistics: transactionsResults }) => {

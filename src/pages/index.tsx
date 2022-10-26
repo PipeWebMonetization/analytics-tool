@@ -210,7 +210,7 @@ const Dashboard: NextPage = () => {
                     Revenue per Day of Week
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
-                    2022
+                    {selectedYear}
                   </Heading>
                 </Flex>
                 <TransactionsPerDayOfWeek
@@ -230,7 +230,7 @@ const Dashboard: NextPage = () => {
                     Revenue per Month
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
-                    2022
+                    {selectedYear}
                   </Heading>
                 </Flex>
                 {revenueStatistics && (
@@ -252,7 +252,7 @@ const Dashboard: NextPage = () => {
                     Revenue per Year
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
-                    2022
+                    {selectedYear}
                   </Heading>
                 </Flex>
                 <TransactionsPerYear
