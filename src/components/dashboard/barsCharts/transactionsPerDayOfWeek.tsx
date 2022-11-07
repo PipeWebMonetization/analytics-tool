@@ -75,7 +75,7 @@ const options: any = {
     padding: {
       left: 0,
       right: 0,
-      top: 22,
+      top: 50,
       bottom: 0,
     },
   },
@@ -94,22 +94,33 @@ const options: any = {
   },
 };
 
-const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const labels = daysOfWeek.map(
+  (_, i) => daysOfWeek[(i + new Date().getDay() + 1) % 7]
+);
+const getDayOfYear = () => {
+  let now: any = new Date();
+  let start: any = new Date(now.getFullYear(), 0, 0);
+  let diff = now - start;
+  let oneDay = 1000 * 60 * 60 * 24;
+  let day = Math.floor(diff / oneDay);
+  return day;
+};
 
 const TransactionsPerDayOfWeek = (props: {
   revenueStatistics: transactionsResults;
 }) => {
   let chartData: number[][] = [];
-
+  let dayOfYear = getDayOfYear();
   // Insert data into chartData
-  if (props.revenueStatistics.weekData) {
-    for (let i = 0; i < props.revenueStatistics.weekData.length; i++) {
+  if (props.revenueStatistics.yearData) {
+    for (let i = 0; i < props.revenueStatistics.yearData.length; i++) {
       if (!chartData[i]) {
         chartData[i] = [];
       }
-      for (let index = 0; index < 7; index++) {
-        if (props.revenueStatistics.weekData[i][index]) {
-          chartData[i].push(props.revenueStatistics.weekData[i][index]);
+      for (let dayIndex = dayOfYear - 6; dayIndex <= dayOfYear; dayIndex++) {
+        if (props.revenueStatistics.yearData[i][dayIndex]) {
+          chartData[i].push(props.revenueStatistics.yearData[i][dayIndex]);
         } else {
           chartData[i].push(0);
         }
@@ -126,6 +137,7 @@ const TransactionsPerDayOfWeek = (props: {
     "#996E00",
     "#332500",
   ];
+
   const data = {
     labels,
     datasets: chartData.map((data, index) => {

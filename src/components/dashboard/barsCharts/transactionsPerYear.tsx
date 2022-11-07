@@ -75,7 +75,7 @@ const options: any = {
     padding: {
       left: 0,
       right: 0,
-      top: 22,
+      top: 50,
       bottom: 0,
     },
   },

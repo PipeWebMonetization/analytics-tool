@@ -74,7 +74,7 @@ const options: any = {
     padding: {
       left: 0,
       right: 0,
-      top: 22,
+      top: 50,
       bottom: 0,
     },
   },
@@ -127,9 +127,7 @@ const TransactionsPerMonth = (props: {
           chartData[i].push(0);
         }
       }
-      // chartData[i].sort((n1: number, n2: number) => n1 - n2);
     }
-    console.log(chartData);
   }
 
   // Define the chart data object

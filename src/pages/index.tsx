@@ -206,8 +206,8 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
-                    Revenue per Day of Week
+                  <Heading size={"md"} ml={"5%"}>
+                    Revenue of current week
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
                     {selectedYear}
@@ -226,7 +226,7 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
+                  <Heading size={"md"} ml={"5%"}>
                     Revenue per Month
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
@@ -248,7 +248,7 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
+                  <Heading size={"md"} ml={"5%"}>
                     Revenue per Year
                   </Heading>
                   <Heading size={"md"} ml={"5"}>
@@ -279,7 +279,7 @@ const Dashboard: NextPage = () => {
           flexDir={"column"}
         >
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
-            Revenue by Payment Pointer
+            Total Revenue per Payment Pointer
           </Heading>
           <Flex
             flexDir={"row"}
@@ -305,7 +305,7 @@ const Dashboard: NextPage = () => {
           px={5}
         >
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
-            Revenue by Content
+            Total Revenue per Content
           </Heading>
           <Text ml={6}>This feature is coming soon... </Text>
         </Flex>
