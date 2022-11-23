@@ -8,13 +8,29 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-const options = {
+const options: any = {
   responsive: true,
   maintainAspectRatio: false,
   cutout: 55,
   plugins: {
     datalabels: {
       display: false,
+    },
+    tooltip: {
+      callbacks: {
+        title: function (tooltipItem: any, data: any) {
+          return tooltipItem[0]["label"];
+        },
+        label: function (tooltipItem: any, data: any) {
+          return tooltipItem["raw"];
+        },
+      },
+      backgroundColor: "#000",
+      titleFontSize: 16,
+      titleFontColor: "#0066ff",
+      bodyFontColor: "#000",
+      bodyFontSize: 14,
+      displayColors: false,
     },
   },
 };
@@ -85,7 +101,6 @@ const DoughnutChart = (props: { revenueStatistics: transactionsResults }) => {
       },
     ],
   };
-
   return <Doughnut data={data} options={options} />;
 };
 

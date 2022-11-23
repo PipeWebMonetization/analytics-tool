@@ -101,6 +101,7 @@ const Dashboard: NextPage = () => {
           setLoadingRevenue(false);
         });
     }
+    clearSelectedPointer();
   }, [selectedPluginId, selectedYear, email]);
 
   useEffect(() => {
@@ -108,6 +109,27 @@ const Dashboard: NextPage = () => {
       router.push("/login");
     }
   }, [session, router, status]);
+
+  const clearSelectedPointer = () => {
+    const selectedPointerYearLabel = document.getElementById(
+      "selected-payment-pointer-year"
+    );
+    const selectedPointerMonthLabel = document.getElementById(
+      "selected-payment-pointer-month"
+    );
+    const selectedPointerWeekLabel = document.getElementById(
+      "selected-payment-pointer-week"
+    );
+    if (selectedPointerYearLabel != undefined) {
+      selectedPointerYearLabel.textContent = "";
+    }
+    if (selectedPointerMonthLabel != undefined) {
+      selectedPointerMonthLabel.textContent = "";
+    }
+    if (selectedPointerWeekLabel != undefined) {
+      selectedPointerWeekLabel.textContent = "";
+    }
+  };
 
   if (!session && status === "unauthenticated") {
     return <div>Not Logged In</div>;
@@ -206,12 +228,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"md"} ml={"5%"}>
-                    Revenue of current week
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue of current week - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    {selectedYear}
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-week"
+                  ></Text>
                 </Flex>
                 <TransactionsPerDayOfWeek
                   revenueStatistics={revenueStatistics}
@@ -226,12 +250,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"md"} ml={"5%"}>
-                    Revenue per Month
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue per Month - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    {selectedYear}
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-month"
+                  ></Text>
                 </Flex>
                 {revenueStatistics && (
                   <TransactionsPerMonth
@@ -248,12 +274,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"md"} ml={"5%"}>
-                    Revenue per Year
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue per Year - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    {selectedYear}
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-year"
+                  ></Text>
                 </Flex>
                 <TransactionsPerYear
                   revenueStatistics={revenueStatistics}

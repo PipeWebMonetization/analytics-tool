@@ -20,6 +20,8 @@ ChartJS.register(
   ChartDataLabels
 );
 
+const teste = (id: any) => {};
+
 const options: any = {
   responsive: true,
   barRoundness: 30,
@@ -30,6 +32,22 @@ const options: any = {
     },
     title: {
       display: false,
+    },
+    tooltip: {
+      callbacks: {
+        title: function (tooltipItem: any, data: any) {
+          return tooltipItem[0]["dataset"]["label"];
+        },
+        label: function (tooltipItem: any, data: any) {
+          return tooltipItem["raw"];
+        },
+      },
+      backgroundColor: "#000",
+      titleFontSize: 16,
+      titleFontColor: "#0066ff",
+      bodyFontColor: "#000",
+      bodyFontSize: 14,
+      displayColors: false,
     },
     datalabels: {
       display: true,
@@ -49,6 +67,17 @@ const options: any = {
         },
         value: {
           color: "black",
+        },
+      },
+      listeners: {
+        click: function (context: any, event: any) {
+          const element = document.getElementById(
+            "selected-payment-pointer-month"
+          );
+          if (element != undefined) {
+            element.textContent =
+              " - Selected pointer: " + context.dataset.label;
+          }
         },
       },
       formatter: function (value: number) {
