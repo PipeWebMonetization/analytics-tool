@@ -92,12 +92,16 @@ const TransactionsPerMonth = (props: {
     "#996E00",
     "#332500",
   ];
+
   const data = {
     labels,
     datasets: chartData.map((data, index) => {
       return {
         label:
-          props.revenueStatistics.monthData[index].paymentPointer.slice(0, -5) ?? "Pointer",
+          props.revenueStatistics.monthData[index].paymentPointer.slice(
+            0,
+            -5
+          ) ?? "Pointer",
         data: data,
         backgroundColor: customColors[index],
       };
