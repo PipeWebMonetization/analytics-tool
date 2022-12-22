@@ -11,7 +11,6 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 const options: any = {
   responsive: true,
   maintainAspectRatio: false,
-  cutout: 55,
   plugins: {
     datalabels: {
       display: false,

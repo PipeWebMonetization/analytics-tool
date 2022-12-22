@@ -20,7 +20,15 @@ ChartJS.register(
   ChartDataLabels
 );
 
-const teste = (id: any) => {};
+const unformatTransaction = (transactionValue: number) => {
+  if (transactionValue >= 2) {
+    return transactionValue - 1;
+  } else if (transactionValue < 2 && transactionValue >= 0.6) {
+    return transactionValue - 0.7;
+  } else {
+    return transactionValue - 0.5;
+  }
+};
 
 const options: any = {
   responsive: true,
@@ -39,7 +47,7 @@ const options: any = {
           return tooltipItem[0]["dataset"]["label"];
         },
         label: function (tooltipItem: any, data: any) {
-          return tooltipItem["raw"];
+          return unformatTransaction(tooltipItem["raw"]);
         },
       },
       backgroundColor: "#000",
@@ -69,21 +77,22 @@ const options: any = {
           color: "black",
         },
       },
-      listeners: {
-        click: function (context: any, event: any) {
-          const element = document.getElementById(
-            "selected-payment-pointer-month"
-          );
-          if (element != undefined) {
-            element.textContent =
-              " - Selected pointer: " + context.dataset.label;
-          }
-        },
-      },
+      // listeners: {
+      //   click: function (context: any, event: any) {
+      //     const element = document.getElementById(
+      //       "selected-payment-pointer-month"
+      //     );
+      //     if (element != undefined) {
+      //       element.textContent =
+      //         " - Selected pointer: " + context.dataset.label;
+      //     }
+      //   },
+      // },
       formatter: function (value: number) {
-        let stringValue = String(value);
+        let transactionValue = unformatTransaction(value);
+        let stringValue = String(transactionValue);
         var numberToFixed = 2;
-        if (value < 1) {
+        if (transactionValue < 1) {
           for (let i = 0; i < stringValue.length; i++) {
             if (stringValue.charAt(i) != "0" && stringValue.charAt(i) != ".") {
               numberToFixed = i;
@@ -91,7 +100,7 @@ const options: any = {
             }
           }
         }
-        let data = value.toFixed(numberToFixed);
+        let data = transactionValue.toFixed(numberToFixed);
         if (Number(data) > 0) {
           return data;
         }
@@ -159,6 +168,24 @@ const TransactionsPerMonth = (props: {
     }
   }
 
+  const formatTransaction = (transactions: number[]) => {
+    let formattedTransactions: number[] = [];
+    transactions.forEach((transaction) => {
+      if (transaction > 0) {
+        if (transaction < 0.1) {
+          formattedTransactions.push(transaction + 0.5);
+        } else if (transaction < 1) {
+          formattedTransactions.push(transaction + 0.7);
+        } else {
+          formattedTransactions.push(transaction + 1);
+        }
+      } else {
+        formattedTransactions.push(0);
+      }
+    });
+    return formattedTransactions;
+  };
+
   // Define the chart data object
   const customColors = [
     "#FFC52E",
@@ -177,7 +204,7 @@ const TransactionsPerMonth = (props: {
             0,
             -5
           ) ?? "Pointer",
-        data: data,
+        data: formatTransaction(data),
         borderRadius: 6,
         backgroundColor: customColors[index],
       };
