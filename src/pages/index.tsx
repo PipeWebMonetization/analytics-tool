@@ -179,7 +179,7 @@ const Dashboard: NextPage = () => {
       <Flex
         alignSelf={"center"}
         w={"70vw"}
-        h={"40vh"}
+        h={"42vh"}
         border={"1px solid rgba(25, 25, 25, 0.16)"}
         borderRadius={"8px"}
         flexDir={"column"}
