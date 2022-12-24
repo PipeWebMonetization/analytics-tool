@@ -101,6 +101,7 @@ const Dashboard: NextPage = () => {
           setLoadingRevenue(false);
         });
     }
+    clearSelectedPointer();
   }, [selectedPluginId, selectedYear, email]);
 
   useEffect(() => {
@@ -108,6 +109,27 @@ const Dashboard: NextPage = () => {
       router.push("/login");
     }
   }, [session, router, status]);
+
+  const clearSelectedPointer = () => {
+    const selectedPointerYearLabel = document.getElementById(
+      "selected-payment-pointer-year"
+    );
+    const selectedPointerMonthLabel = document.getElementById(
+      "selected-payment-pointer-month"
+    );
+    const selectedPointerWeekLabel = document.getElementById(
+      "selected-payment-pointer-week"
+    );
+    if (selectedPointerYearLabel != undefined) {
+      selectedPointerYearLabel.textContent = "";
+    }
+    if (selectedPointerMonthLabel != undefined) {
+      selectedPointerMonthLabel.textContent = "";
+    }
+    if (selectedPointerWeekLabel != undefined) {
+      selectedPointerWeekLabel.textContent = "";
+    }
+  };
 
   if (!session && status === "unauthenticated") {
     return <div>Not Logged In</div>;
@@ -157,7 +179,7 @@ const Dashboard: NextPage = () => {
       <Flex
         alignSelf={"center"}
         w={"70vw"}
-        h={"40vh"}
+        h={"42vh"}
         border={"1px solid rgba(25, 25, 25, 0.16)"}
         borderRadius={"8px"}
         flexDir={"column"}
@@ -206,12 +228,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
-                    Revenue per Day of Week
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue of current week - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    2022
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-week"
+                  ></Text>
                 </Flex>
                 <TransactionsPerDayOfWeek
                   revenueStatistics={revenueStatistics}
@@ -226,12 +250,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
-                    Revenue per Month
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue per Month - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    2022
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-month"
+                  ></Text>
                 </Flex>
                 {revenueStatistics && (
                   <TransactionsPerMonth
@@ -248,12 +274,14 @@ const Dashboard: NextPage = () => {
                 maxH={"28vh"}
               >
                 <Flex flexDir={"row"} alignItems={"center"} mb={"1rem"}>
-                  <Heading size={"lg"} ml={"5%"}>
-                    Revenue per Year
+                  <Heading flexDir={"row"} size={"md"} ml={"5%"} mr={"0.5rem"}>
+                    Revenue per Year - {selectedYear}
                   </Heading>
-                  <Heading size={"md"} ml={"5"}>
-                    2022
-                  </Heading>
+                  <Text
+                    fontSize={"lg"}
+                    as={"b"}
+                    id="selected-payment-pointer-year"
+                  ></Text>
                 </Flex>
                 <TransactionsPerYear
                   revenueStatistics={revenueStatistics}
@@ -279,7 +307,7 @@ const Dashboard: NextPage = () => {
           flexDir={"column"}
         >
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
-            Revenue by Payment Pointer
+            Total Revenue per Payment Pointer
           </Heading>
           <Flex
             flexDir={"row"}
@@ -305,7 +333,7 @@ const Dashboard: NextPage = () => {
           px={5}
         >
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
-            Revenue by Content
+            Total Revenue per Content
           </Heading>
           <Text ml={6}>This feature is coming soon... </Text>
         </Flex>
