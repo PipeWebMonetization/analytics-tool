@@ -77,17 +77,6 @@ const options: any = {
           color: "black",
         },
       },
-      // listeners: {
-      //   click: function (context: any, event: any) {
-      //     const element = document.getElementById(
-      //       "selected-payment-pointer-month"
-      //     );
-      //     if (element != undefined) {
-      //       element.textContent =
-      //         " - Selected pointer: " + context.dataset.label;
-      //     }
-      //   },
-      // },
       formatter: function (value: number) {
         let transactionValue = unformatTransaction(value);
         let stringValue = String(transactionValue);
@@ -195,6 +184,7 @@ const TransactionsPerMonth = (props: {
     "#996E00",
     "#332500",
   ];
+  console.log("Chardata", chartData);
   const data = {
     labels,
     datasets: chartData.map((data, index) => {
