@@ -132,7 +132,7 @@ const TransactionsPerContent = (props: {
     var labels: string[] = [];
 
     if (props.postInfos && props.transactions) {
-      const reducedArray = props.transactions.reduce(
+      const transactions = props.transactions.reduce(
         (acc: any[], info: any) => {
           const hasItem = acc.find((a) => a.postId === info.postId);
           if (hasItem) {
@@ -147,19 +147,25 @@ const TransactionsPerContent = (props: {
         []
       );
 
-      for (let i = 0; i < reducedArray.length; i++) {
-        let post: PostInfoDocument[] = props.postInfos.filter(
-          (post: PostInfoDocument) => post.postId === reducedArray[i].postId
+      const postInfos = props.postInfos.sort((a, b) =>
+        a.postTitle.localeCompare(b.postTitle)
+      );
+
+      for (let i = 0; i < postInfos.length; i++) {
+        let transaction: TransactionsDocument[] = transactions.filter(
+          (transaction: TransactionsDocument) =>
+            transaction.postId === postInfos[i].postId
         );
-        if (post.length > 0) {
-          labels.push(post[0].postTitle);
-        } else {
-          labels.push("Nenhum");
+
+        if (postInfos.length > 0) {
+          labels.push(postInfos[i].postTitle);
         }
+
         if (!chartData[0]) {
           chartData[0] = [];
         }
-        chartData[0].push(reducedArray[i].value);
+
+        chartData[0].push(transaction[0]?.value);
       }
 
       labels.pop();
@@ -168,9 +174,7 @@ const TransactionsPerContent = (props: {
 
       if (labels.length > 6) {
         if (chartDiv?.style?.width) {
-          const newWidth =
-            Number(chartDiv.style.width.replace("px", "")) +
-            (labels.length - 6) * 30;
+          const newWidth = 300 + (labels.length - 6) * 30;
           chartDiv.style.width = `${newWidth}px`;
         }
       }

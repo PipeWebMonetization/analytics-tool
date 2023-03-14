@@ -184,7 +184,7 @@ const TransactionsPerMonth = (props: {
     "#996E00",
     "#332500",
   ];
-  console.log("Chardata", chartData);
+
   const data = {
     labels,
     datasets: chartData.map((data, index) => {
