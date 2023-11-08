@@ -31,13 +31,6 @@ const Login: NextPage = () => {
   } = useForm();
 
   const onSubmit = handleSubmit(async (values) => {
-    console.log(process.env.NEXTAUTH_SECRET)
-    console.log(process.env.SMTP_HOST)
-    console.log(process.env.SMTP_PORT)
-    console.log(process.env.SMTP_USER)
-    console.log(process.env.SMTP_PASSWORD)
-    console.log(process.env.SMTP_FROM)
-    console.log('-------------------')
     console.log(process.env.NEXT_PUBLIC_NEXTAUTH_SECRET)
     console.log(process.env.NEXT_PUBLIC_SMTP_HOST)
     console.log(process.env.NEXT_PUBLIC_SMTP_PORT)
