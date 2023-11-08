@@ -37,6 +37,11 @@ const Login: NextPage = () => {
     console.log(process.env.NEXT_PUBLIC_SMTP_USER)
     console.log(process.env.NEXT_PUBLIC_SMTP_PASSWORD)
     console.log(process.env.NEXT_PUBLIC_SMTP_FROM)
+    console.log('--------------------------------')
+    console.log(process.env.NEXT_PUBLIC_NEXT_AUTH_AWS_ACCESS_KEY)
+    console.log(process.env.NEXT_PUBLIC_NEXT_AUTH_AWS_SECRET_KEY)
+    console.log(process.env.NEXT_PUBLIC_NEXT_AUTH_AWS_REGION)
+    console.log('--------------------------------')
     setLoading(true);
     await signIn("email", values);
     setLoading(false);
