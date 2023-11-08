@@ -34,8 +34,6 @@ export default NextAuth({
         },
       },
       from: process.env.SMTP_FROM,
-      
     }),
   ],
-  
 });
