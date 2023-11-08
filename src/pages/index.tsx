@@ -19,8 +19,16 @@ import { useEffect, useState } from "react";
 import { transactionsResults } from "../lib/database/databaseService";
 import TransactionsPerDayOfWeek from "../components/dashboard/barsCharts/transactionsPerDayOfWeek";
 import TransactionsPerYear from "../components/dashboard/barsCharts/transactionsPerYear";
-import { PluginIdDocument, verifyPluginIDs } from "../modules";
+import {
+  getPostInfos,
+  getTransactionByPluginId,
+  PluginIdDocument,
+  PostInfoDocument,
+  TransactionsDocument,
+  verifyPluginIDs,
+} from "../modules";
 import { MonetizationEvent, Batcher } from "../lib/monetization/monetization";
+import TransactionsPerContent from "../components/dashboard/barsCharts/transactionsPerContent";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
@@ -34,6 +42,8 @@ const Dashboard: NextPage = () => {
       weekData: [],
     });
   const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
+  const [postInfos, setPostInfos] = useState<PostInfoDocument[]>([]);
+  const [transactions, setTransactions] = useState<TransactionsDocument[]>([]);
   const [selectedPluginId, setSelectedPluginId] = useState<string>("");
   const [selectedYear, setSelectedYear] = useState<string>("2022");
 
@@ -102,6 +112,21 @@ const Dashboard: NextPage = () => {
         });
     }
     clearSelectedPointer();
+
+    const fetchPosts = async () => {
+      const postData = await getPostInfos(selectedPluginId);
+      setPostInfos(postData.Items);
+    };
+
+    const fetchTransactions = async () => {
+      const transactionsData = await getTransactionByPluginId(selectedPluginId);
+      setTransactions(transactionsData.Items);
+    };
+
+    if (selectedPluginId) {
+      fetchPosts();
+      fetchTransactions();
+    }
   }, [selectedPluginId, selectedYear, email]);
 
   const clearSelectedPointer = () => {
@@ -324,7 +349,24 @@ const Dashboard: NextPage = () => {
           <Heading size={"md"} ml={"5%"} mt={"1rem"} mb={"1rem"}>
             Total Revenue per Content
           </Heading>
-          <Text ml={6}>This feature is coming soon... </Text>
+          <Flex
+            flexDir={"row"}
+            alignSelf="center"
+            position={"relative"}
+            width="100%"
+            maxWidth="90%"
+            height="75%"
+            overflowX={"scroll"}
+          >
+            <Flex>
+              {transactions && postInfos && (
+                <TransactionsPerContent
+                  transactions={transactions}
+                  postInfos={postInfos}
+                ></TransactionsPerContent>
+              )}
+            </Flex>
+          </Flex>
         </Flex>
       </Flex>
     </Flex>

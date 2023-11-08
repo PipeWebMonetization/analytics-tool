@@ -78,17 +78,6 @@ const options: any = {
           color: "black",
         },
       },
-      // listeners: {
-      //   click: function (context: any, event: any) {
-      //     const element = document.getElementById(
-      //       "selected-payment-pointer-week"
-      //     );
-      //     if (element != undefined) {
-      //       element.textContent =
-      //         " - Selected pointer: " + context.dataset.label;
-      //     }
-      //   },
-      // },
       formatter: function (value: number) {
         let transactionValue = unformatTransaction(value);
         let stringValue = String(transactionValue);
