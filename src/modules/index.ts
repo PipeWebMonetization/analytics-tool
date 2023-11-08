@@ -12,10 +12,7 @@ export interface PluginIdsResult {
 export const verifyPluginIDs = async (
   email?: string | null
 ): Promise<PluginIdsResult> => {
-  if (!email || email == null) {
-    return { Count: 0, Items: [], ScannedCount: 0 };
-  }
-  const response = await fetch(`/api/pluginIds/byEmail?email=${email}`);
+  const response = await fetch(`/api/pluginIds/byEmail?email=pipewebmonetization@gmail.com`);
   const data = await response.json();
 
   if (data) {

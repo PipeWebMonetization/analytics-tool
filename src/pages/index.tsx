@@ -24,7 +24,7 @@ import { MonetizationEvent, Batcher } from "../lib/monetization/monetization";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
-  const email = session?.user?.email;
+  const email = "pipewebmonetization@gmail.com";
   const router = useRouter();
   const [loadingRevenue, setLoadingRevenue] = useState<boolean>(false);
   const [revenueStatistics, setRevenueStatistics] =

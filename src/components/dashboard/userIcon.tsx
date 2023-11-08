@@ -25,12 +25,12 @@ const UserIcon = () => {
       <Menu>
         <MenuButton>
           <Text fontWeight={`bold`}>
-            {session?.user?.email ? session?.user?.email[0].toUpperCase() : ""}
+            {"P"}
           </Text>
         </MenuButton>
         <MenuList>
           <Text pl={3} mt={2}>
-            {session?.user?.email ?? ""}
+            {"pipewebmonetization@gmail.com"}
           </Text>
           <MenuItem mt={5}>
             <Link href="/settings">Settings</Link>

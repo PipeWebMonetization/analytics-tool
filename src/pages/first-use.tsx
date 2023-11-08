@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import UserIcon from "../components/dashboard/userIcon";
 import CircleIcon from "../components/circleIcon";
-import { EmailIcon, ArrowBackIcon, CopyIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, CopyIcon } from "@chakra-ui/icons";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,10 +26,10 @@ const Settings: NextPage = () => {
   const router = useRouter();
 
   const savePluginID = () => {
-    if (value.length > 0 && session?.user?.email) {
+    if (value.length > 0) {
       fetch("/api/pluginIds/add", {
         method: "POST",
-        body: JSON.stringify({ email: session.user.email, pluginId: value }),
+        body: JSON.stringify({ email: "pipewebmonetization@gmail.com", pluginId: value }),
       }).then((res) => {
         if (res.status == 200) {
           setisSaved(true);

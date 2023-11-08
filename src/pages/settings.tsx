@@ -24,7 +24,7 @@ import { BsFillTrashFill } from "react-icons/bs";
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
-  const email = session?.user?.email;
+  const email = "pipewebmonetization@gmail.com";
   const [pluginIds, setPluginIds] = useState<PluginIdDocument[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [isLoading, setisLoading] = useState(false);
