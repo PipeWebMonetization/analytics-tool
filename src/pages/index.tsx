@@ -104,12 +104,6 @@ const Dashboard: NextPage = () => {
     clearSelectedPointer();
   }, [selectedPluginId, selectedYear, email]);
 
-  useEffect(() => {
-    if (!session && status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [session, router, status]);
-
   const clearSelectedPointer = () => {
     const selectedPointerYearLabel = document.getElementById(
       "selected-payment-pointer-year"
@@ -131,11 +125,6 @@ const Dashboard: NextPage = () => {
     }
   };
 
-  if (!session && status === "unauthenticated") {
-    return <div>Not Logged In</div>;
-  } else if (!session) {
-    return <div></div>;
-  }
   return (
     <Flex w={"100vw"} h={"100vh"} flexDir={"column"}>
       <Flex

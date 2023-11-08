@@ -81,15 +81,6 @@ const Dashboard: NextPage = () => {
     }
   }, [email]);
 
-  useEffect(() => {
-    if (!session && status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [session, router, status]);
-
-  if (!session && status === "unauthenticated") {
-    return <div>Not Logged In</div>;
-  }
   return (
     <Flex w={"100vw"} h={"100vh"} flexDir={"column"}>
       <Flex
